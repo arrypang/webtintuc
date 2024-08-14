@@ -71,13 +71,13 @@
                         <div class="col-xl-2 col-lg-2 col-md-4">
                             <div class="header-right-btn f-right d-none d-lg-block">
                                 <div class="btn-group">
+                                    <a href="/login">Đăng nhập</a>
                                     <img src="/uploads/users/users_default.png" class="text-center dropdown-toggle" data-toggle="dropdown" data-display="static" aria-expanded="false" alt="Hình ảnh " width="40px" height="40px">
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
-                            
                                         <a class="dropdown-item" href="#">Thông tin</a>
-                                        <a class="dropdown-item" href="#">Quản trị viên</a>
-                                        <a class="dropdown-item" href="#">Đăng xuất</a>
-                                        
+                                        <a class="dropdown-item" href="/admin">Quản trị viên</a>
+                                        <a class="dropdown-item" href="/logout  ">Đăng xuất</a>
+
                                     </div>
                                 </div>
 

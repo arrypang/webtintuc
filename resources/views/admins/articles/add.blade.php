@@ -2,6 +2,16 @@
 
 @section('title', 'Thêm bài viết')
 
+@section('navmini')
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{route('admin')}}">Trang chủ</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{route('admin.article')}}">Bài viết</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Thêm mới</li>
+    </ol>
+</nav>
+@endsection
+
 @section('content')
 <div class="container-fluid py-4">
     <div class="row">
@@ -26,7 +36,7 @@
                         <form action="/admin/article/add" method="post" class="mx-4" enctype="multipart/form-data">
                             @csrf
                             <div class="row ">
-                                <div class="col-7">
+                                <div class="col-8">
                                     <div class="my-2">
                                         <label for="title" class="form-label text-dark">Tiêu đề <span class="text-danger">*</span></label>
                                         <input type="text" name="title" id="title" class="form-control">
@@ -38,7 +48,11 @@
 
 
                                 </div>
-                                <div class="col-5">
+                                <div class="col-4">
+                                    <div class="my-2 mt-5 form-check form-switch ps-0">
+                                        <input class="form-check-input mt-1 ms-auto" name="draft" type="checkbox" id="draft">
+                                        <label for="draft" class="form-label text-dark ms-3">Bản nháp</label>
+                                    </div>
                                     <div class="my-2">
                                         <label for="categoryID" class="form-label text-dark">Thể loại <span class="text-danger">*</span></label>
                                         <select class="form-select" name="categoryID" id="categoryID">

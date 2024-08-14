@@ -28,12 +28,15 @@ Route::middleware(['auth', 'checkAdmin'])->prefix('admin')->group(function () {
 
     // Quản lí article
     Route::get('/article', [articleController::class, 'show'])->name('admin.article');
+    Route::patch('/article/update/{articleID}', [articleController::class, 'updateStatus'])->name('admin.article.updateStatus');
+    Route::get('/article/draft', [articleController::class, 'showDraft'])->name('admin.article.draft');
 
     Route::get('/article/add', [articleController::class ,'create'])->name('admin.article.add');
     Route::post('/article/add', [articleController::class, 'store']);
 
     Route::get('/article/update/{id}', [articleController::class ,'edit'])->name('admin.article.edit');
     Route::post('/article/update/{id}', [articleController::class, 'update']);
+    
 
     Route::delete('/article/delete/{id}', [articleController::class, 'delete'])->name('admin.article.delete');
 

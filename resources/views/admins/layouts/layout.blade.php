@@ -9,7 +9,7 @@
   <title>
     @yield('title','Home Admin')
   </title>
-  @vite('resources/js/app.js');
+  @vite('resources/js/app.js')
   @include('admins.layouts.style')
 </head>
 
