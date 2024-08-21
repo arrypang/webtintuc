@@ -27,7 +27,6 @@
                         
                         <form action="/admin/user/add" method="post" class="mx-4" enctype="multipart/form-data">
                             @csrf
-                            @method('PUT')
                             <div class="row ">
                                 <div class="col-7">
                                     <div class="my-2">
@@ -56,11 +55,10 @@
                                     <div class="my-2">
                                         <label for="roles" class="form-label text-dark">Vai trò<span class="text-danger">*</span></label>
                                         <select class="form-select" name="roles" id="roles">
-                                            <option selected disabled>--- Chọn vai trò ---</option>
                                             <option value="admin" {{ old('roles') == 'admin' ? 'selected' : '' }}>Quản trị viên</option>
                                             <option value="editor" {{ old('roles') == 'editor' ? 'selected' : '' }}>Kiểm duyệt viên</option>
                                             <option value="author" {{ old('roles') == 'author' ? 'selected' : '' }}>Tác giả</option>
-                                            <option value="user" {{ old('roles') == 'user' ? 'selected' : '' }}>Người dùng</option>
+                                            <option value="user" {{ old('roles', 'user') == 'user' ? 'selected' : '' }}>Người dùng</option>
                                         </select>
                                         @error('roles')
                                             <em class="invalid-feedback">{{ $message }}</em>

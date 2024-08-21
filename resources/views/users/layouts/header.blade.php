@@ -1,96 +1,103 @@
+@php
+use App\Models\Category;
+$categories = Category::all();
+@endphp
 <header>
-    <div class="header-area">
-        <div class="main-header ">
-            <div class="header-top black-bg d-none d-md-block">
-                <div class="container">
-                    <div class="col-xl-12">
-                        <div class="row d-flex justify-content-between align-items-center">
-                            <div class="header-info-left">
-                                <ul>
-                                    <li><img src="/assets/users/img/icon/header_icon1.png" alt="">34ºc, Sunny </li>
-                                    <li><img src="/assets/users/img/icon/header_icon1.png" alt="">Tuesday, 18th June, 2019</li>
-                                </ul>
-                            </div>
-                            <div class="header-info-right">
-                                <ul class="header-social">
-                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                    <li> <a href="#"><i class="fab fa-pinterest-p"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="header-mid d-none d-md-block">
-                <div class="container">
-                    <div class="row d-flex align-items-center">
-                        <!-- Logo -->
-                        <div class="col-xl-3 col-lg-3 col-md-3">
-                            <div class="logo">
-                                <a href="{{route('home')}}"><img src="/assets/users/img/logo/logo.png" alt=""></a>
-                            </div>
-                        </div>
-                        <div class="col-xl-9 col-lg-9 col-md-9">
-                            <div class="header-banner f-right ">
-                                <img src="/assets/users/img/hero/header_card.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="header-bottom header-sticky">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-xl-10 col-lg-10 col-md-12 header-flex">
-                            <!-- sticky -->
-                            <div class="sticky-logo">
-                                <a href="{{route('home')}}"><img src="/assets/users/img/logo/logo.png" alt=""></a>
-                            </div>
-                            <!-- Main-menu -->
-                            <div class="main-menu d-none d-md-block">
-                                <nav>
-                                    <ul id="navigation">
-                                        <li><a href="{{route('home')}}">Trang chủ</a></li>
-                                        <li><a href="categori.html">Category</a></li>
-                                        <li><a href="about.html">About</a></li>
-                                        <li><a href="latest_news.html">Latest News</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="#">Pages</a>
-                                            <ul class="submenu">
-                                                <li><a href="elements.html">Element</a></li>
-                                                <li><a href="blog.html">Blog</a></li>
-                                                <li><a href="single-blog.html">Blog Details</a></li>
-                                                <li><a href="details.html">Categori Details</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-lg-2 col-md-4">
-                            <div class="header-right-btn f-right d-none d-lg-block">
-                                <div class="btn-group">
-                                    <a href="/login">Đăng nhập</a>
-                                    <img src="/uploads/users/users_default.png" class="text-center dropdown-toggle" data-toggle="dropdown" data-display="static" aria-expanded="false" alt="Hình ảnh " width="40px" height="40px">
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">
-                                        <a class="dropdown-item" href="#">Thông tin</a>
-                                        <a class="dropdown-item" href="/admin">Quản trị viên</a>
-                                        <a class="dropdown-item" href="/logout  ">Đăng xuất</a>
+	<!-- Header desktop -->
+	<div class="container-menu-desktop">
+		<div class="topbar">
+			<div class="content-topbar container h-100">
+				<div class="right-topbar">
+				</div>
+				<div class="left-topbar">
 
-                                    </div>
-                                </div>
+					@if(Auth::check() && !(auth()->user()->roles == 'user'))
+					<a href="/admin" class="left-topbar-item">Quản trị website</a>
+					@endif
+					@if(Auth::check())
+					<a href="/profile" class="left-topbar-item">Thông tin cá nhân</a>
+					<p class="left-topbar-item"> {{auth()->user()->fullName}}</p>
+					<a href="" onclick="event.preventDefault(); document.getElementById('logout1').submit()"  class="left-topbar-item">Đăng xuất</a>
+					<form action="{{route('logout')}}" method="post" id="logout1" hidden>
+						@csrf
+					</form>
+					@else
+					<a href="/register" class="left-topbar-item">Đăng Kí</a>
+					<a href="/login" class="left-topbar-item">Đăng nhập</a>
+					@endif
 
+				</div>
+			</div>
+		</div>
 
-                            </div>
-                        </div>
-                        <!-- Mobile Menu -->
-                        <div class="col-12">
-                            <div class="mobile_menu d-block d-md-none"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<!-- Header Mobile -->
+		<div class="wrap-header-mobile">
+			<!-- Logo moblie -->
+			<div class="logo-mobile">
+				<a href="/"><img src="/assets/users/images/logo/logo.svg" alt="IMG-LOGO"></a>
+			</div>
+
+			<!-- Button show menu -->
+			<div class="btn-show-menu-mobile hamburger hamburger--squeeze m-r--8">
+				<span class="hamburger-box">
+					<span class="hamburger-inner"></span>
+				</span>
+			</div>
+		</div>
+
+		<!-- Menu Mobile -->
+		<div class="menu-mobile">
+			<ul class="topbar-mobile">
+				<li class="left-topbar">
+					@if(Auth::check() && !(auth()->user()->roles == 'user'))
+					<a href="/admin" class="left-topbar-item">Quản trị website</a>
+					@endif
+					@if(Auth::check())
+					<a href="/profile" class="left-topbar-item">Thông tin cá nhân</a>
+					<p class="left-topbar-item"> {{auth()->user()->fullName}}</p>
+					@else
+					<a href="/register" class="left-topbar-item">Đăng Kí</a>
+					<a href="/login" class="left-topbar-item">Đăng nhập</a>
+					@endif
+				</li>
+			</ul>
+
+			<ul class="main-menu-m">
+
+				@foreach($categories as $category)
+				<li>
+					<a href="/{{$category->slug}}">{{$category->categoryName}}</a>
+				</li>
+				@endforeach
+			</ul>
+		</div>
+
+		<!--  -->
+		<div class="wrap-logo container">
+			<div class="logo">
+				<a href="/"><img src="/assets/users/images/logo/logo.svg" alt="LOGO"></a>
+			</div>
+
+		</div>
+
+		<!--  -->
+		<div class="wrap-main-nav">
+			<div class="main-nav">
+				<nav class="menu-desktop">
+					<ul class="main-menu">
+						<!-- main-menu-active -->
+						<li class="mega-menu-item">
+							<a href="{{route('home')}}">Trang chủ</a>
+						</li>
+						@foreach($categories as $category)
+						<li class="mega-menu-item">
+							<a href="/{{$category->slug}}">{{$category->categoryName}}</a>
+						</li>
+						@endforeach
+
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
 </header>

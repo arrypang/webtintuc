@@ -1,90 +1,52 @@
-<!doctype html>
-<html class="no-js" lang="zxx">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>@yield('title','Trang chủ')</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/users/img/favicon.ico">
-
-    <link rel="stylesheet" href="/assets/users/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/users/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/assets/users/css/ticker-style.css">
-    <link rel="stylesheet" href="/assets/users/css/flaticon.css">
-    <link rel="stylesheet" href="/assets/users/css/slicknav.css">
-    <link rel="stylesheet" href="/assets/users/css/animate.min.css">
-    <link rel="stylesheet" href="/assets/users/css/magnific-popup.css">
-    <link rel="stylesheet" href="/assets/users/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="/assets/users/css/themify-icons.css">
-    <link rel="stylesheet" href="/assets/users/css/slick.css">
-    <link rel="stylesheet" href="/assets/users/css/nice-select.css">
-    <link rel="stylesheet" href="/assets/users/css/style.css">
+	<title>@yield('title', 'Trang chủ')</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="/assets/users/images/logo/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="/assets/users/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/users/fonts/fontawesome-5.0.8/css/fontawesome-all.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/users/fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/users/vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/assets/users/vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/users/vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/users/css/util.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/users/css/main.css">
 </head>
 
 <body>
 
-    <!-- Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="assets/img/logo/logo.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Preloader Start -->
-    @include('users.layouts.header')
+	<div>
+		@include('users.layouts.header')
 
-    <main>
-        @yield('content')
-    </main>
+		<div class="container">
+			<div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8">
+				<div class="f2-s-1 p-r-30 m-tb-6">
+					@yield('breadcrumb')
+				</div>
 
-    @include('users.layouts.footer')
-    <!-- JS here -->
+				<form method="get" action="{{route('search')}}" class="pos-relative size-a-2 bo-1-rad-22 of-hidden bocl11 m-tb-6">
+					<input class="f1-s-1 cl6 plh9 s-full p-l-25 p-r-45" type="text" name="search" placeholder="Tìm kiếm bài viết">
+					<button class="flex-c-c size-a-1 ab-t-r fs-20 cl2 hov-cl10 trans-03" type="submit">
+						<i class="zmdi zmdi-search"></i>
+					</button>
+				</form>
+			</div>
+		</div>
 
-    <!-- All JS Custom Plugins Link Here here -->
-    <script src="/assets/users/js/vendor/modernizr-3.5.0.min.js"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="/assets/users/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="/assets/users/js/popper.min.js"></script>
-    <script src="/assets/users/js/bootstrap.min.js"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="/assets/users/js/jquery.slicknav.min.js"></script>
+		@yield('content')
 
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="/assets/users/js/owl.carousel.min.js"></script>
-    <script src="/assets/users/js/slick.min.js"></script>
-    <!-- Date Picker -->
-    <script src="/assets/users/js/gijgo.min.js"></script>
-    <!-- One Page, Animated-HeadLin -->
-    <script src="/assets/users/js/wow.min.js"></script>
-    <script src="/assets/users/js/animated.headline.js"></script>
-    <script src="/assets/users/js/jquery.magnific-popup.js"></script>
+		@include('users.layouts.footer')
+	</div>
 
-    <!-- Breaking New Pluging -->
-    <script src=".//assets/users/js/jquery.ticker.js"></script>
-    <script src=".//assets/users/js/site.js"></script>
-
-    <!-- Scrollup, nice-select, sticky -->
-    <script src="/assets/users/js/jquery.scrollUp.min.js"></script>
-    <script src="/assets/users/js/jquery.nice-select.min.js"></script>
-    <script src="/assets/users/js/jquery.sticky.js"></script>
-
-    <!-- contact js -->
-    <script src="/assets/users/js/contact.js"></script>
-    <script src="/assets/users/js/jquery.form.js"></script>
-    <script src="/assets/users/js/jquery.validate.min.js"></script>
-    <script src="/assets/users/js/mail-script.js"></script>
-    <script src="/assets/users/js/jquery.ajaxchimp.min.js"></script>
-
-    <!-- Jquery Plugins, main Jquery -->
-    <script src="/assets/users/js/plugins.js"></script>
-    <script src="/assets/users/js/main.js"></script>
+	<script src="/assets/users/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="/assets/users/vendor/animsition/js/animsition.min.js"></script>
+	<script src="/assets/users/vendor/bootstrap/js/popper.js"></script>
+	<script src="/assets/users/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/users/js/main.js"></script>
 
 </body>
 

@@ -25,8 +25,7 @@ return new class extends Migration
 
             $table->foreign('userID')->references('userID')->on('users');
             $table->foreign('categoryID')->references('categoryID')->on('categories');
-
-        });
+        }); 
     }
 
     /**

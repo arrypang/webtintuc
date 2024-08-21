@@ -16,7 +16,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('users.profile', [
             'user' => $request->user(),
         ]);
     }
@@ -30,6 +30,19 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        if ($request->hasFile('up_image')) {
+            if ($request->user()->image && file_exists(public_path('uploads/users/' . $request->user()->image))) {
+                unlink(public_path('uploads/users/' . $request->user()->image));
+            }
+
+
+            $image = $request->file('up_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('uploads/users'), $imageName);
+
+            $request->user()->image = $imageName;
         }
 
         $request->user()->save();

@@ -22,4 +22,14 @@ class Article extends Model
     {
         return $this->hasMany(Comment::class, 'articleID', 'articleID');
     }
+
+    public function categories()
+    {
+        return $this->belongsTo(Category::class,'categoryID');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'userID');
+    }
 }

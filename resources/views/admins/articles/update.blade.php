@@ -25,20 +25,31 @@
                         @endif
                         <form action="/admin/article/update/{{$article->articleID}}" method="post" class="mx-4" enctype="multipart/form-data">
                             @csrf
+                            @method('put')
                             <div class="row ">
                                 <div class="col-7">
                                     <div class="my-2">
                                         <label for="title" class="form-label text-dark">Tiêu đề <span class="text-danger">*</span></label>
                                         <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $article->title) }}">
+                                        @error('title')
+                                        <em class="invalid-feedback">{{ $message }}</em>
+                                        @enderror
                                     </div>
                                     <div class="my-2">
-                                        <label for="content" class="form-label text-dark">Nội dung <span class="text-danger">*</span></label>
-                                        <textarea type="text" name="content" id="content" class="form-control" rows="20">{{ old('title', $article->content)}}</textarea>
+                                        <label for="editor" class="form-label text-dark">Nội dung <span class="text-danger">*</span></label>
+                                        <textarea type="text" name="content" id="editor" class="form-control" rows="20">{{ old('content', $article->content)}}</textarea>
                                     </div>
 
 
                                 </div>
                                 <div class="col-5">
+                                    @if(!($article->status == 'published'))
+                                    <div class="my-2 mt-5 form-check form-switch ps-0">
+                                        <input {{($article->status == 'draft')? 'checked': '' }}  class="form-check-input mt-1 ms-auto" name="draft" type="checkbox" id="draft">
+                                        <label for="draft" class="form-label text-dark ms-3">Bản nháp</label>
+                                    </div>
+                                    @endif
+                                    
                                     <div class="my-2">
                                         <label for="categoryID" class="form-label text-dark">Thể loại <span class="text-danger">*</span></label>
                                         <select class="form-select" name="categoryID" id="categoryID">
@@ -52,7 +63,7 @@
                                         <input class="form-control" type="file" id="up_image" name="up_image">
                                     </div>
                                     <div class="mt-4 pt-3">
-                                        <img src="/uploads/articles/{{ $article->image }}" alt="User Image" class=" border-radius-lg" width="150px" >
+                                        <img src="/uploads/articles/{{ $article->image }}" alt="User Image" class=" border-radius-lg" width="150px">
                                     </div>
 
                                 </div>

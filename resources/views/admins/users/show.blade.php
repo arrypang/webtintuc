@@ -5,7 +5,7 @@
 @section('navmini')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{route('admin')}}">Trang chủ</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{route('admin')}}">Bảng điều khiển</a></li>
         <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Thành viên</li>
     </ol>
 </nav>
@@ -77,7 +77,7 @@
                                             @method('DELETE')
                                         </form>
                                         @else
-                                        <a href="#" class="text-secondary font-weight-bold text-xs">
+                                        <a href="/profile" class="text-secondary font-weight-bold text-xs">
                                             Thông tin cá nhân
                                         </a>
                                         @endif

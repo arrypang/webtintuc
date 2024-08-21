@@ -8,7 +8,7 @@ $currentRoute = Route::currentRouteName();
 @section('navmini')
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{route('admin')}}">Trang chủ</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{route('admin')}}">Bảng điều khiển</a></li>
         @if($currentRoute == 'admin.article.draft')
         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{route('admin.article')}}">Bài viết</a></li>
         <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Bản nháp</li>
@@ -29,7 +29,7 @@ $currentRoute = Route::currentRouteName();
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
                         <div class="flex-row">
                             <h6 class="text-white text-capitalize ps-3">
-                                {{ ($currentRoute=='admin.article.draft')? 'Danh sách bản nháp  ' :'Danh sách bài viết' }}
+                                {{ ($currentRoute=='admin.article.draft')? 'Danh sách bản nháp' :'Danh sách bài viết' }}
                             </h6>
                         </div>
                         <div class="flex-row-reverse">
@@ -57,9 +57,6 @@ $currentRoute = Route::currentRouteName();
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nội dung</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Người đăng</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thể loại</th>
-                                    @if($currentRoute == 'admin.article.draft')
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
-                                     @endif
                                     @if($currentRoute == 'admin.article')
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phê duyệt</th>
                                     @endif
@@ -88,51 +85,48 @@ $currentRoute = Route::currentRouteName();
                                     </td>
                                     <td class="align-middle text-center text-sm">
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <?php
-                                            $user = $users->firstWhere('userID', $article->userID);
-                                            ?>
-                                            {{$user ? $user->fullName : ''}}
+                                            {{$article->user->fullName}}
                                         </p>
                                     </td>
                                     <td class="align-middle text-center">
                                         <p class="text-xs font-weight-bold mb-0">
-                                            <?php
-                                            $category = $categories->firstWhere('categoryID', $article->categoryID)
-                                            ?>
-                                            {{$category ? $category->categoryName : ''}}
+                                            {{$article->categories->categoryName }}
                                         </p>
                                     </td>
-                                    @if($currentRoute == 'admin.article.draft')
-                                    <td class="align-middle text-center">
-                                        @php
-                                        $statusText = '';
-                                        switch ($article->status) {
-                                        case 'draft':
-                                        $statusText = 'Bản nháp';
-                                        }
-                                        @endphp
-                                        <p class="text-xs font-weight-bold mb-0">{{ $statusText }}</p>
-                                    </td>
-                                    @endif
                                     @if($currentRoute == 'admin.article')
                                     <td class="align-middle text-center">
-                                        @if(($article->status === 'pending_review'))
-                                        <a href="" class="text-warning font-weight-bold text-xs m-0"
-                                            onclick="event.preventDefault();document.getElementById('updateStatus_form{{$article->articleID}}').submit();">
-                                            <p class=" text-xs font-weight-bold mb-0 rounded-pill border p-1 border-warning">Duyệt</p>
+                                        @if(($article->status === 'pending_review') && (auth()->user()->roles == 'admin' || auth()->user()->roles == 'editor'))
+                                        <a href="" class="text-success"
+                                            onclick="event.preventDefault();document.getElementById('DForm{{$article->articleID}}').submit();">
+                                            <i class="material-icons fs-6 p-2 border border-success rounded-circle">check</i>
                                         </a>
 
-                                        <form action="{{route('admin.article.edit',$article->articleID)}}" method="post" id="updateStatus_form{{$article->articleID}}" hidden>
+                                        <a href="" class="text-danger"
+                                            onclick="event.preventDefault();document.getElementById('TForm{{$article->articleID}}').submit();">
+                                            <i class="material-icons fs-6 p-2 border border-danger rounded-circle">block</i>
+                                        </a>
+
+                                        <form action="{{route('admin.article.edit',$article->articleID)}}" method="post" id="DForm{{$article->articleID}}" hidden>
                                             @csrf
                                             @method('PATCH')
+                                            <input type="text" name="status" value="published" hidden>
                                         </form>
+                                        <form action="{{route('admin.article.edit',$article->articleID)}}" method="post" id="TForm{{$article->articleID}}" hidden>
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="text" name="status" value="rejected" hidden>
+                                        </form>
+                                        @elseif($article->status === 'published')
+                                        <p class="text-success text-xs font-weight-bold mb-0">Đã được duyệt</p>
+                                        @elseif($article->status === 'pending_review')
+                                        <p class="text-warning text-xs font-weight-bold mb-0">Đang chờ xét duyệt</p>
                                         @else
-                                        <p class="text-success text-xs font-weight-bold mb-0">Đã duyệt</p>
+                                        <p class="text-danger text-xs font-weight-bold mb-0">Bị từ chối</p>
                                         @endif
 
                                     </td>
                                     @endif
-                                    
+
                                     <td class="align-middle text-center">
                                         <a href="/admin/article/update/{{$article->articleID}}" class="text-success font-weight-bold text-xs m-0">
                                             <i class="material-icons fs-6 ">draw</i>
@@ -185,6 +179,11 @@ $currentRoute = Route::currentRouteName();
 
         modalTitle.textContent = title;
         modalBody.innerHTML = content;
+    });
+
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
     });
 </script>
 @endsection

@@ -3,25 +3,30 @@
 namespace App\Http\Controllers\admins;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\RequestArticle;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 
 class articleController extends Controller
 {
     public function show()
     {
-        $articles = Article::where('status', '!=', 'draft')->get();
-        $users = User::all();
+        if (auth()->user()->roles == 'author') {
+            $articles = Article::where('status', '!=', 'draft')->orderBy('created_at', 'desc')->where('userID',auth()->id())->get();    
+        } else {
+            $articles = Article::where('status', '!=', 'draft')->orderBy('created_at', 'desc')->get();
+        }
         $categories = Category::all();
-        return view('admins.articles.show', compact('articles', 'users', 'categories'));
+        return view('admins.articles.show', compact('articles', 'categories'));
     }
 
-    public function showDraft() 
+    public function showDraft()
     {
-        $articles = Article::where('status', 'like', 'draft' )->where('userID',auth()->id())->get();
+        $articles = Article::where('status', 'like', 'draft')->where('userID', auth()->id())->get();
         $users = User::all();
         $categories = Category::all();
         return view('admins.articles.show', compact('articles', 'users', 'categories'));
@@ -33,15 +38,17 @@ class articleController extends Controller
         return view('admins.articles.add', compact('categorys'));
     }
 
-    public function store(Request $request)
+    public function store(RequestArticle $request)
     {
-
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:2000',
-            'content' => 'required|string',
-            'categoryID' => 'required|exists:categories,categoryID',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
-        ]);
+        ($request['draft']) ? $request['status'] = 'draft' : $request['status'] = 'pending_review';
+        $validatedData = [
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'categoryID' => $request['categoryID'],
+            'slug' => Str::slug($request['title']),
+            'userID' => auth()->id(),
+            'status' => $request['status'],
+        ];
 
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
@@ -49,20 +56,10 @@ class articleController extends Controller
             $validatedData['image'] = $imageName;
         }
 
-        ($request['draft'])? $request['status'] = 'draft' : $request['status'] = 'pending_review';
-
-        Article::create([
-            'title' => $validatedData['title'],
-            'content' => $validatedData['content'],
-            'slug' => Str::slug($validatedData['title']),
-            'userID' => auth()->id(),
-            'categoryID' => $validatedData['categoryID'],
-            'status' => $request['status'],
-            'image' => $validatedData['image'],
-        ]);
-
+        Article::create($validatedData);
         return redirect()->route('admin.article')->with('success', 'Thêm bài viết thành công.');
     }
+
     public function edit($id)
     {
         $categorys = Category::all();
@@ -70,22 +67,20 @@ class articleController extends Controller
         return view('admins.articles.update', compact('article', 'categorys'));
     }
 
-    public function updateStatus($articleID)
+    public function updateStatus(Request $request, $articleID)
     {
         $article = Article::where('articleID', $articleID)->first();
-        $article['status'] = 'published';
+        $article['status'] = $request['status'];
         $article->save();
-
-        return redirect()->route('admin.article')->with('success', 'Duyệt bài id:' . $article->articleID . ' thành công');
+        if ($request['status'] == 'published') {
+            return redirect()->route('admin.article')->with('success', 'Duyệt bài thành công');
+        } else {
+            return redirect()->route('admin.article')->with('danger', 'Từ chối thành công');
+        }
     }
-    public function update(Request $request, $id)
+
+    public function update(RequestArticle $request, $id)
     {
-        $request->validate([
-            'title' => 'required|string|max:2000',
-            'content' => 'required|string',
-            'categoryID' => 'required|exists:categories,categoryID',
-            'image' => 'image|mimes:jpeg,png,jpg',
-        ]);
 
         $article = Article::where('articleID', $id)->firstOrFail();
 
@@ -93,21 +88,18 @@ class articleController extends Controller
         $article->content = $request->input('content');
         $article->slug = Str::slug($article->title);
         $article->categoryID = $request->input('categoryID');
-        $article->status = 'draft';
+        ($request['draft']) ? $article->status = 'draft' : $article->status;
 
         if ($request->hasFile('up_image')) {
             if ($article->image && file_exists(public_path('uploads/articles/' . $article->image))) {
                 unlink(public_path('uploads/articles/' . $article->image));
             }
 
-
             $image = $request->file('up_image');
             $imageName = time() . '_' . $image->getClientOriginalName();
             $image->move(public_path('uploads/articles'), $imageName);
-
             $article->image = $imageName;
         }
-
         $article->save();
 
         return redirect()->route('admin.article')->with('success', 'Cập nhật thành công.');

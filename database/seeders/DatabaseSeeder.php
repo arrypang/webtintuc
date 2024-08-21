@@ -22,17 +22,17 @@ class DatabaseSeeder extends Seeder
             'userName' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin'),
-            'fullName' => 'Administrator',
+            'fullName' => 'Quản trị viên',
             'roles' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         DB::table('users')->insert([
-            'userName' => 'admin',
+            'userName' => 'doantrungnhan',
             'email' => 'doantrungnhan24@gmail.com',
             'password' => Hash::make('nhan2004'),
-            'fullName' => 'Administrator',
+            'fullName' => 'Đoàn Trung Nhân',
             'roles' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),

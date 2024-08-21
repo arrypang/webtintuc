@@ -63,7 +63,7 @@ class UserController extends Controller
             if ($user->image && file_exists(public_path('uploads/users/' . $user->image))) {
                 unlink(public_path('uploads/users/' . $user->image));
             }
-            
+
 
             $image = $request->file('up_image');
             $imageName = time() . '_' . $image->getClientOriginalName();
@@ -81,7 +81,10 @@ class UserController extends Controller
     public function delete($userID)
     {
         $user = User::where('userID', $userID)->first();
-        unlink(public_path('uploads/users/' . $user->image));
+        if ($user->image) {
+            unlink(public_path('uploads/users/' . $user->image));
+        }
+
         $user->delete();
         return redirect('/admin/user');
     }

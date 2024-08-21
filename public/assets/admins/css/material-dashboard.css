@@ -27940,4 +27940,11 @@ pre[class*="language-"] {
   }
 }
 
+
+.ck .ck-content{
+  min-height: 500px;
+  max-height: 5000px;
+  overflow: auto;
+}
+
 /*# sourceMappingURL=dashboard-free.css.map */

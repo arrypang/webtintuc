@@ -239,7 +239,7 @@ const editorConfig = {
 	menuBar: {
 		isVisible: true
 	},
-	placeholder: 'Type or paste your content here!',
+	placeholder: 'Vui lòng nhập nội dung!!',
 	style: {
 		definitions: [
 			{

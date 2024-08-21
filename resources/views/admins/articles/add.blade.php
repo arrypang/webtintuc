@@ -24,29 +24,24 @@
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive p-0">
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
-                        <form action="/admin/article/add" method="post" class="mx-4" enctype="multipart/form-data">
+                        <form id="addForm" action="/admin/article/add" method="post" class="mx-4" enctype="multipart/form-data">
                             @csrf
                             <div class="row ">
                                 <div class="col-8">
                                     <div class="my-2">
                                         <label for="title" class="form-label text-dark">Tiêu đề <span class="text-danger">*</span></label>
-                                        <input type="text" name="title" id="title" class="form-control">
+                                        <input type="text" name="title" id="title" class="form-control" value="{{old('title')}}">
+                                        @error('title')
+                                        <em class="invalid-feedback">{{ $message }}</em>
+                                        @enderror
                                     </div>
                                     <div class="my-2">
                                         <label for="editor" class="form-label text-dark">Nội dung <span class="text-danger">*</span></label>
-                                        <textarea name="content" id="editor" class="form-control"></textarea>
+                                        <textarea name="content" id="editor" class="form-control">{{old('content')}}</textarea>
+                                        @error('content')
+                                        <em class="invalid-feedback">{{ $message }}</em>
+                                        @enderror
                                     </div>
-
-
                                 </div>
                                 <div class="col-4">
                                     <div class="my-2 mt-5 form-check form-switch ps-0">
@@ -55,16 +50,22 @@
                                     </div>
                                     <div class="my-2">
                                         <label for="categoryID" class="form-label text-dark">Thể loại <span class="text-danger">*</span></label>
-                                        <select class="form-select" name="categoryID" id="categoryID">
+                                        <select class="form-select" name="categoryID" id="categoryID" >
                                             <option selected disabled>--- Chọn thể loại ---</option>
                                             @foreach($categorys as $category)
-                                            <option value="{{$category->categoryID}}">{{$category->categoryName}}</option>
+                                            <option value="{{$category->categoryID}}" {{(old('categoryID') == $category->categoryID) ? 'selected': '' }}>{{$category->categoryName}}</option>
                                             @endforeach
                                         </select>
+                                        @error('categoryID')
+                                        <em class="invalid-feedback">{{ $message }}</em>
+                                        @enderror
                                     </div>
                                     <div class="my-2">
                                         <label for="image" class="form-label text-dark">Thêm hình ảnh <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="file" id="image" name="image">
+                                        <input class="form-control" accept="image/*" type="file" id="image" name="image">
+                                        @error('image')
+                                        <em class="invalid-feedback">{{ $message }}</em>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -80,4 +81,16 @@
         </div>
     </div>
 </div>
+
+@section('scripts')
+<script>
+    document.getElementById('addForm').addEventListener('submit', function() {
+    for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+    }
+});
+</script>
+
+});
+@endsection
 @endsection

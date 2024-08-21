@@ -139,7 +139,3 @@ Stroke effects - Nucleo outline icons
   background-color: transparent; /* Không thay đổi màu nền khi hover */
   cursor: default; /* Không thay đổi con trỏ khi hover */
 }
-
-.ck .ck-content{
-  height: 350px;
-}

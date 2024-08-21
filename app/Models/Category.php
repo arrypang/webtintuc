@@ -14,4 +14,11 @@ class Category extends Model
         'slug',
         'description',
     ];
+
+
+    public function article()
+    {
+        return $this->hasMany(Article::class, 'categoryID', 'categoryID');
+    }
+
 }
